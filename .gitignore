@@ -1,0 +1,10 @@
+# sbt artifacts
+target/
+.bsp
+
+# lock files
+~*
+*~
+
+# os artifacts
+.DS_Store
