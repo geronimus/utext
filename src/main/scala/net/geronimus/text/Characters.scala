@@ -6,7 +6,7 @@ package net.geronimus.text
 object Characters {
 
   /** The set of all line ending characters. */
-  lazy val lineEndingsSet : Set[ Char ] = Set(
+  val lineEndingsSet : Set[ Char ] = Set(
     LineEndings.LineFeed,
     LineEndings.VerticalTab,
     LineEndings.FormFeed,
@@ -17,7 +17,7 @@ object Characters {
   )
 
   /** The set of all word boundary or horizontal spacing modifier characters. */
-  lazy val spacesSet : Set[ Char ] = Set(
+  val spacesSet : Set[ Char ] = Set(
     Spaces.HorizontalTab,
     Spaces.Space,
     Spaces.NoBreakSpace,
@@ -47,10 +47,10 @@ object Characters {
   /** The set of all horizontal and vertical spacing modifier characters,
     * meaning the union of the `lineEndingsSet` and the `spacesSet`.
     */
-  lazy val spacingSet = lineEndingsSet ++ spacesSet
+  val spacingSet = lineEndingsSet ++ spacesSet
 
   /** The set of all unprintable characters. */
-  lazy val unprintableSet : Set[ Char ] = Set(
+  val unprintableSet : Set[ Char ] = Set(
     Unprintable.NullCharacter,
     Unprintable.StartOfHeading,
     Unprintable.StartOfText,
