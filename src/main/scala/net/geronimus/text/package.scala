@@ -63,6 +63,13 @@ package object text:
     else if Characters.unprintableSet.contains( text.head ) then true
     else containsUnprintable( text.tail )
 
+  /** Returns the text value that you provide, but stripped of any of the
+    * characters classified as `Unprintable` in
+    * [[net.geronimus.text.Characters.Unprintable]].
+    *
+    * @param text The text from which you wish to remove all unprintable
+    * characters.
+    */
   def filterUnprintable( text : String ) : String =
     text.filter( !Characters.unprintableSet.contains( _ ) )
 
