@@ -24,6 +24,50 @@ class UniCharSeqSpec extends AnyFunSpec:
     }
   }
 
+  describe( ".equals( that : Any ) : Boolean" ) {
+
+    it(
+      "UniCharSeq values containing the same (normalized) text compare as " +
+        "equal."
+    ) {
+      assert( UniCharSeq( "foo" ) != UniCharSeq( "bar" ) )
+      assert( UniCharSeq( "\u0045\u0301" ) != UniCharSeq( "\u0045\u0302" ) )
+      assert( UniCharSeq( "😎" ) != UniCharSeq( "🥸" ) )
+
+      assert( UniCharSeq( "Hello, Dolly!" ) == UniCharSeq( "Hello, Dolly!" ) )
+      assert( UniCharSeq( "\u0045\u0301mile" ) == UniCharSeq( "\u00c9mile" ) )
+      assert( UniCharSeq( "🙈🙉🙊" ) == UniCharSeq( "🙈🙉🙊" ) )
+    }
+  }
+
+  describe( ".hashCode : Int" ) {
+
+    it(
+      "UniCharSeq values containing the same (normalized) text have the same " +
+        "hash code."
+    ) {
+      assert( UniCharSeq( "foo" ).hashCode != UniCharSeq( "bar" ).hashCode )
+      assert(
+        UniCharSeq( "\u0045\u0301" ).hashCode !=
+          UniCharSeq( "\u0045\u0302" ).hashCode
+      )
+      assert( UniCharSeq( "😎" ).hashCode != UniCharSeq( "🥸" ).hashCode )
+
+      assert(
+        UniCharSeq( "Hello, Dolly!" ).hashCode ==
+          UniCharSeq( "Hello, Dolly!" ).hashCode
+      )
+      assert(
+        UniCharSeq( "\u0045\u0301mile" ).hashCode ==
+          UniCharSeq( "\u00c9mile" ).hashCode
+      )
+      assert(
+        UniCharSeq( "🙈🙉🙊" ).hashCode ==
+          UniCharSeq( "🙈🙉🙊" ).hashCode
+      )
+    }
+  }
+
   describe( ".head : String" ) {
 
     it( "If the sequence is empty, throws a NoSuchElementException." ) {
@@ -107,7 +151,7 @@ class UniCharSeqSpec extends AnyFunSpec:
         "String."
     ) {
       assert( UniCharSeq( "x" ).tail == "" )
-      assert( UniCharSeq( "\u0069\u0302" ).tail == "" )
+      assert( UniCharSeq( "\u0045\u0302" ).tail == "" )
       assert( UniCharSeq( "🤔" ).tail == "" )
     }
 
@@ -116,8 +160,43 @@ class UniCharSeqSpec extends AnyFunSpec:
         "it is physically a single-Char or a surrogate pair."
     ) {
       assert( UniCharSeq( "Parse" ).tail == "arse" )
-      assert( UniCharSeq( "\u0069\u0301mile" ).tail == "mile" )
+      assert( UniCharSeq( "\u0045\u0301mile" ).tail == "mile" )
       assert( UniCharSeq( "🙈🙉🙊" ).tail == "🙉🙊" )
+    }
+  }
+
+  describe( ".toSeq : Seq[ String ]" ) {
+
+    it( "An empty UniCharSeq gives an empty Seq." ) {
+  
+      assert( UniCharSeq.empty.toSeq == Seq.empty )
+    }
+
+    it(
+      "The Seq returned contains the normalized logical characters, in order."
+    ) {
+      assert(
+        UniCharSeq( "Hello, Dolly!" ).toSeq ==
+          Seq( "H", "e", "l", "l", "o", ",", " ", "D", "o", "l", "l", "y", "!" )
+      )
+      assert(
+        UniCharSeq( "\u0045\u0301mile" ).toSeq ==
+          Seq( "\u00c9", "m", "i", "l", "e" )
+      )
+      assert(
+        UniCharSeq( "🙈🙉🙊" ).toSeq ==
+          Seq( "🙈", "🙉", "🙊" )
+      )
+    }
+  }
+
+  describe( ".toString : String" ) {
+
+    it( "Returns the normalized version of the input text." ) {
+
+      assert( UniCharSeq( "Hello, Dolly!" ).toString == "Hello, Dolly!" )
+      assert( UniCharSeq( "\u0045\u0301mile" ).toString == "\u00c9mile" )
+      assert( UniCharSeq( "🙈🙉🙊" ).toString == "🙈🙉🙊" )
     }
   }
 
